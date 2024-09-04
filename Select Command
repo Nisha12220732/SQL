@@ -1,0 +1,18 @@
+show databases;
+use mysql;
+show tables;
+
+# To select all data of the table
+select * from global_grants;
+
+# To count the number of total records in the table
+select count(*) from global_grants;
+
+# To select column named "PRIV" from table
+select priv from global_grants;
+
+# To select column named "PRIV" from table with distinct values
+select distinct PRIV from global_grants;
+
+# To count rowws in  column named "PRIV" from table with distanct values
+select count(distinct PRIV) from global_grants;
