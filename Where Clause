@@ -1,0 +1,18 @@
+create table K22WB1 (id INT PRIMARY KEY, name VARCHAR(255), grade float);
+insert into K22WB1 values(122309 , "Nia" , 8.8);
+insert into K22WB1 values(122310 , "Neha" , 8.1);
+insert into K22WB1 values(122300, "Naina" , 8.5);
+insert into K22WB1 values(122303 , "Nidhi" , 7.8);
+insert into K22WB1 values(122305 , "Neha" , 8.3);
+insert into K22WB1 values(122306 , "Nimi" , 8.09);
+insert into K22WB1 values(122324 , "Nats" , 8.9);
+insert into K22WB1 values(122312 , "Nancy" , 9.8);
+insert into K22WB1 values(122319 , "Noah" , 7.8);
+select * from K22WB1;
+
+select * from  k22wb1 where grade >= 8.5;
+select * from  k22wb1 where grade = 8.5;
+select * from  k22wb1 where grade <= 8.5;
+select * from  k22wb1 where grade > 8.5;
+select * from  k22wb1 where grade < 8.5;
+select * from  k22wb1 where grade != 8.5;
