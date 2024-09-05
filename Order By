@@ -1,0 +1,52 @@
+use class;
+
+CREATE TABLE Purchases (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_name VARCHAR(100),
+    product_name VARCHAR(100),
+    purchase_date DATE,
+    marked_price DECIMAL(10, 2),
+    selling_price DECIMAL(10, 2),
+    discount_price DECIMAL(10, 2)
+);
+INSERT INTO Purchases (customer_name, product_name, purchase_date, marked_price, selling_price, discount_price)
+VALUES
+('Alice Smith', 'Laptop', '2024-09-01', 1200.00, 1000.00, 200.00),
+('Bob Johnson', 'Smartphone', '2024-09-02', 800.00, 750.00, 50.00),
+('Carol Davis', 'Headphones', '2024-09-03', 150.00, 130.00, 20.00),
+('David Brown', 'Keyboard', '2024-09-04', 100.00, 90.00, 10.00),
+('Eva White', 'Monitor', '2024-09-05', 300.00, 280.00, 20.00),
+('Frank Green', 'Mouse', '2024-09-06', 50.00, 45.00, 5.00),
+('Grace Lee', 'Printer', '2024-09-07', 200.00, 180.00, 20.00),
+('Henry Wilson', 'Desk Chair', '2024-09-08', 150.00, 140.00, 10.00),
+('Ivy Adams', 'Webcam', '2024-09-09', 90.00, 85.00, 5.00),
+('Jack Martin', 'USB Drive', '2024-09-10', 30.00, 25.00, 5.00),
+('Karen Thompson', 'External Hard Drive', '2024-09-11', 250.00, 230.00, 20.00),
+('Larry Anderson', 'Router', '2024-09-12', 100.00, 90.00, 10.00),
+('Mona Thomas', 'Phone Case', '2024-09-13', 20.00, 15.00, 5.00),
+('Nina Harris', 'Charging Cable', '2024-09-14', 15.00, 12.00, 3.00),
+('Oscar Martinez', 'Tablet', '2024-09-15', 400.00, 350.00, 50.00),
+('Paul Jackson', 'Smartwatch', '2024-09-16', 200.00, 180.00, 20.00),
+('Quinn Robinson', 'Game Console', '2024-09-17', 500.00, 450.00, 50.00),
+('Rachel Walker', 'Camera', '2024-09-18', 600.00, 550.00, 50.00),
+('Steve Young', 'Projector', '2024-09-19', 700.00, 650.00, 50.00),
+('Tina Scott', 'Blu-ray Player', '2024-09-20', 150.00, 130.00, 20.00),
+('Ursula King', 'Smart Home Hub', '2024-09-21', 100.00, 85.00, 15.00);
+select * from purchases;
+
+select * from purchases where selling_price between 100 and 300 order by customer_name;
+
+select * from purchases where purchase_date between '2024-09-10' and '2024-09-15' order by customer_name;
+
+]select * from purchases where customer_name between 'Alice Smith' and 'Grace Lee' order by product_name;
+
+select * from purchases where customer_name not between 'Alice Smith' and 'Grace Lee' order by product_name;
+
+select * from purchases where customer_name between 'Alice Smith' and 'Grace Lee' order by purchase_date;
+
+select * from purchases order by product_name;
+select * from purchases order by product_name desc;
+select * from purchases order by product_name,customer_name;
+select * from purchases order by product_name,customer_name desc;
+select * from purchases order by marked_price;
+select * from purchases order by marked_price desc;
