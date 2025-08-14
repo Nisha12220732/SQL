@@ -1,0 +1,119 @@
+-- ===========================
+-- Library Management System
+-- Complete SQL Script
+-- ===========================
+
+-- 1. Drop existing tables (for re-run)
+DROP TABLE IF EXISTS Borrowing;
+DROP TABLE IF EXISTS Books;
+DROP TABLE IF EXISTS Categories;
+DROP TABLE IF EXISTS Members;
+
+-- 2. Create Members table
+CREATE TABLE Members (
+    member_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    join_date DATE NOT NULL
+);
+
+-- 3. Create Categories table
+CREATE TABLE Categories (
+    category_id INT PRIMARY KEY AUTO_INCREMENT,
+    category_name VARCHAR(50) NOT NULL
+);
+
+-- 4. Create Books table
+CREATE TABLE Books (
+    book_id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(150) NOT NULL,
+    author VARCHAR(100),
+    category_id INT,
+    total_copies INT NOT NULL,
+    available_copies INT NOT NULL,
+    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
+);
+
+-- 5. Create Borrowing table
+CREATE TABLE Borrowing (
+    borrow_id INT PRIMARY KEY AUTO_INCREMENT,
+    member_id INT,
+    book_id INT,
+    borrow_date DATE,
+    return_date DATE,
+    due_date DATE,
+    FOREIGN KEY (member_id) REFERENCES Members(member_id),
+    FOREIGN KEY (book_id) REFERENCES Books(book_id)
+);
+
+-- ===========================
+-- Insert Sample Data
+-- ===========================
+
+INSERT INTO Categories (category_name) VALUES
+('Fiction'),
+('Science'),
+('History');
+
+INSERT INTO Members (name, email, join_date) VALUES
+('Alice', 'alice@example.com', '2023-01-15'),
+('Bob', 'bob@example.com', '2023-03-20');
+
+INSERT INTO Books (title, author, category_id, total_copies, available_copies) VALUES
+('The Great Gatsby', 'F. Scott Fitzgerald', 1, 5, 5),
+('A Brief History of Time', 'Stephen Hawking', 2, 3, 3),
+('Sapiens: A Brief History of Humankind', 'Yuval Noah Harari', 3, 4, 4);
+
+-- ===========================
+-- Borrow a Book Example
+-- ===========================
+
+-- Reduce available copies
+UPDATE Books SET available_copies = available_copies - 1 WHERE book_id = 1;
+
+-- Add borrowing record
+INSERT INTO Borrowing (member_id, book_id, borrow_date, due_date)
+VALUES (1, 1, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 14 DAY));
+
+-- ===========================
+-- Example Queries / Reports
+-- ===========================
+
+-- 1. View all books
+SELECT * FROM Books;
+
+-- 2. Find overdue books
+SELECT m.name AS Member, b.title AS Book, br.due_date
+FROM Borrowing br
+JOIN Members m ON br.member_id = m.member_id
+JOIN Books b ON br.book_id = b.book_id
+WHERE br.return_date IS NULL AND br.due_date < CURDATE();
+
+-- 3. Most borrowed books
+SELECT b.title, COUNT(*) AS times_borrowed
+FROM Borrowing br
+JOIN Books b ON br.book_id = b.book_id
+GROUP BY b.title
+ORDER BY times_borrowed DESC
+LIMIT 5;
+
+-- 4. Active members (borrowed at least 1 book)
+SELECT DISTINCT m.name
+FROM Members m
+JOIN Borrowing br ON m.member_id = br.member_id;
+
+-- ===========================
+-- Fine Calculation Example
+-- (₹5 per day overdue)
+-- ===========================
+SELECT m.name, b.title,
+       DATEDIFF(CURDATE(), br.due_date) AS days_overdue,
+       CASE 
+         WHEN DATEDIFF(CURDATE(), br.due_date) > 0 
+         THEN DATEDIFF(CURDATE(), br.due_date) * 5
+         ELSE 0
+       END AS fine_amount
+FROM Borrowing br
+JOIN Members m ON br.member_id = m.member_id
+JOIN Books b ON br.book_id = b.book_id
+WHERE br.return_date IS NULL;
